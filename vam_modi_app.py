@@ -732,8 +732,8 @@ with st.sidebar:
 st.markdown("""
 <div class="hero">
   <div class="hero-tag">🥗 Program Makan Bergizi Gratis · Kab. Sumedang</div>
-  <h1>Optimasi Distribusi MBG</h1>
-  <p>Vogel's Approximation Method (VAM) + Modified Distribution Method (MODI) — Solver Transportasi Interaktif</p>
+  <h1>VAM & MODI Optimization Website</h1>
+  <p>Vogel's Approximation Method (VAM) + Modified Distribution Method (MODI) — Penyelesaian Transportasi MBG</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -762,11 +762,11 @@ st.markdown("<br>", unsafe_allow_html=True)
 # Cost + supply editor
 n_r = st.session_state.n_sppg; n_c = st.session_state.n_sek
 df_data = {st.session_state.sek_names[j]: [st.session_state.cost[i][j] for i in range(n_r)] for j in range(n_c)}
-df_data["📦 Supply"] = st.session_state.supply[:n_r]
+df_data["Supply"] = st.session_state.supply[:n_r]
 df = pd.DataFrame(df_data, index=st.session_state.sppg_names[:n_r])
 df.index.name = "SPPG \\ Sekolah"
 
-st.markdown("**✏️ Edit matriks biaya dan supply:**")
+st.markdown("**Edit tabel cost dan supply:**")
 edf = st.data_editor(df, use_container_width=True, num_rows="fixed", key="cost_ed")
 for i in range(n_r):
     st.session_state.supply[i] = int(edf.iloc[i]["📦 Supply"])
@@ -774,17 +774,17 @@ for i in range(n_r):
         st.session_state.cost[i][j] = int(edf.iloc[i][st.session_state.sek_names[j]])
 
 st.markdown("**✏️ Edit demand:**")
-ddf = pd.DataFrame({"Sekolah": st.session_state.sek_names[:n_c], "🎒 Demand (siswa)": st.session_state.demand[:n_c]})
+ddf = pd.DataFrame({"Sekolah": st.session_state.sek_names[:n_c], "Demand (siswa)": st.session_state.demand[:n_c]})
 eddf = st.data_editor(ddf, use_container_width=True, num_rows="fixed", key="dem_ed")
 for j in range(n_c):
-    st.session_state.demand[j] = int(eddf.iloc[j]["🎒 Demand (siswa)"])
+    st.session_state.demand[j] = int(eddf.iloc[j]["Demand (siswa)"])
 
 st.markdown("<br>", unsafe_allow_html=True)
 cb1, cb2 = st.columns([2,1])
 with cb1:
-    solve_btn = st.button("🚀 Selesaikan dengan VAM + MODI", use_container_width=True)
+    solve_btn = st.button("Mulai penyelesaian VAM + MODI", use_container_width=True)
 with cb2:
-    if st.button("🔄 Reset ke Data Sumedang", use_container_width=True):
+    if st.button("Reset Data", use_container_width=True):
         for k in ["n_sppg","n_sek","sppg_names","sek_names","supply","demand","cost","solved","vam_steps","modi_steps","vam_alloc","modi_alloc","vam_step_idx","modi_step_idx"]:
             if k in st.session_state: del st.session_state[k]
         st.rerun()
